@@ -1,2 +1,0 @@
-# mercadolibre
-React project !
