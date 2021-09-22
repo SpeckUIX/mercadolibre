@@ -7,6 +7,7 @@ Run these commands from the root folder.
 
 - `yarn run start` Starts the backend development server.
 - `yarn run build` Builds the backend app to the `build` directory.
+- `yarn run build:ssr` Builds the backend wth react app on SSR to the `build` directory.
 
 ## Frontend commands
 Run these commands from the `frontend` folder.

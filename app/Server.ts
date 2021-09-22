@@ -2,6 +2,8 @@ import { Express, Request, Response } from "express";
 import express from "express";
 import * as path from "path";
 
+import { ItemsController } from "./controllers/items.controller";
+
 export class Server {
   private app: Express;
 
@@ -13,19 +15,19 @@ export class Server {
     this.app.get("/api", (req: Request, res: Response): void => {
       res.send("You have reached the API!");
     });
+
     this.app.get("/api/items", (req: Request, res: Response): void => {
-      if (req.query.q) {
-        res.send("Searching!");
-      } else {
-        res.send("You have reached the API Items!");
-      }
+      new ItemsController()
+        .getByQuery(req.query.q as string)
+        .then((response) => res.json(response))
+        .catch((error) => res.send(error));
     });
+
     this.app.get("/api/items/:id", (req: Request, res: Response): void => {
-      if (req.params.id) {
-        res.send("Show detail !!");
-      } else {
-        res.send("You have reached the API Items ID!");
-      }
+      new ItemsController()
+        .getById(req.params.id)
+        .then((response) => res.json(response))
+        .catch((error) => res.send(error));
     });
 
     this.app.get("*", (req: Request, res: Response): void => {

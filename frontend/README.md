@@ -27,7 +27,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `cd frontend/ && yarn build && cd .. && yarn build && yarn start`
+### `cd .. && yarn run build:ssr`
 
 Builds the app for production to the `build` folder with API & React app.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
