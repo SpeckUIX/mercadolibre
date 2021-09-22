@@ -3,8 +3,3 @@ node_modules/
 build/*
 package-*.json
 yarn.lock
-frontend/node_modules/
-frontend/build/*
-frontend/package-*.json
-frontend/.idea
-frontend/yarn.lock
