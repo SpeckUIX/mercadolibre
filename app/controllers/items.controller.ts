@@ -19,7 +19,7 @@ export class ItemsController {
         const responseData: ItemsResponse = {
           author,
         };
-  
+
         axios
           .get(`${this.apiURL}/sites/MLA/search?q=${query}`)
           .then((response) => {
@@ -32,7 +32,7 @@ export class ItemsController {
               .filter((item) => item.id === "category")
               .map((item) => item.values.map((value) => value.name));
 
-            responseData.categories = categories;
+            responseData.categories = (<unknown>categories[0]) as Categories;
             responseData.items = response.data?.results.map((item) => {
               /**
                * priceData: variable que muestra un objeto de precios priorizados por tipo "promotion" ya que este trae el precio decimal siempre y cuando exista, si no existe igual muestra el precio entero
@@ -47,7 +47,7 @@ export class ItemsController {
                       (price) => price.type === "standard"
                     );
 
-              const priceSplit = priceData[0].amount.toString().split('.');
+              const priceSplit = priceData[0].amount.toString().split(".");
 
               return {
                 id: item.id,
@@ -55,7 +55,7 @@ export class ItemsController {
                 price: {
                   currency: item.currency_id,
                   amount: priceSplit[0],
-                  decimals: priceSplit[1] || '00',
+                  decimals: priceSplit[1] || "00",
                 },
                 picture: item.thumbnail,
                 condition: item.condition,
@@ -85,7 +85,7 @@ export class ItemsController {
         const responseData: ItemResponse = {
           author,
         };
-  
+
         axios
           .get(`${this.apiURL}/items/${id}`)
           .then((response) => {
@@ -106,11 +106,11 @@ export class ItemsController {
                   description,
                   free_shipping: product.shipping.free_shipping,
                   id: product.id,
-                  picture: product.pictures[0],
+                  picture: product.pictures[0]?.url,
                   price: {
                     currency: product.currency_id,
                     amount: product.price,
-                    decimals: null
+                    decimals: null,
                   },
                   sold_quantity: product.sold_quantity,
                   title: product.title,
