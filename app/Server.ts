@@ -1,28 +1,43 @@
-import {Express, Request, Response} from "express";
+import { Express, Request, Response } from "express";
 import express from "express";
 import * as path from "path";
 
+import { ItemsController } from "./controllers/items.controller";
+
 export class Server {
+  private app: Express;
 
-    private app: Express;
+  constructor(app: Express) {
+    this.app = app;
 
-    constructor(app: Express) {
-        this.app = app;
+    this.app.use(express.static(path.resolve("./") + "/build/frontend"));
 
-        this.app.use(express.static(path.resolve("./") + "/build/frontend"));
+    this.app.get("/api", (req: Request, res: Response): void => {
+      res.send("You have reached the API!");
+    });
 
-        this.app.get("/api", (req: Request, res: Response): void => {
-            res.send("You have reached the API!");
-        });
+    this.app.get("/api/items", (req: Request, res: Response): void => {
+      new ItemsController()
+        .getByQuery(req.query.q as string)
+        .then((response) => res.json(response))
+        .catch((error) => res.send(error));
+    });
 
-        this.app.get("*", (req: Request, res: Response): void => {
-            res.sendFile(path.resolve("./") + "/build/frontend/index.html");
-        });
-    }
+    this.app.get("/api/items/:id", (req: Request, res: Response): void => {
+      new ItemsController()
+        .getById(req.params.id)
+        .then((response) => res.json(response))
+        .catch((error) => res.send(error));
+    });
 
-    public start(port: number): void {
-        this.app.listen(port, () => console.log(`Server listening on port ${port}!`));
-    }
+    this.app.get("*", (req: Request, res: Response): void => {
+      res.sendFile(path.resolve("./") + "/build/frontend/index.html");
+    });
+  }
 
+  public start(port: number): void {
+    this.app.listen(port, () =>
+      console.log(`Server listening on port ${port}!`)
+    );
+  }
 }
-
