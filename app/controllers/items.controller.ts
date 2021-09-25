@@ -47,13 +47,15 @@ export class ItemsController {
                       (price) => price.type === "standard"
                     );
 
+              const priceSplit = priceData[0].amount.toString().split('.');
+
               return {
                 id: item.id,
                 title: item.title,
                 price: {
                   currency: item.currency_id,
-                  amount: priceData[0].regular_amount,
-                  decimals: priceData[0].amount,
+                  amount: priceSplit[0],
+                  decimals: priceSplit[1] || '00',
                 },
                 picture: item.thumbnail,
                 condition: item.condition,
